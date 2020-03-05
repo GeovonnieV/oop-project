@@ -4,12 +4,73 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-​
+​//where we are in our directory we want to create a new directory called output
 const OUTPUT_DIR = path.resolve(__dirname, "output")
+//puts a team.html file in the output directory
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 ​
 const render = require("./lib/htmlRenderer");
-​
+​//create the arrays to push members and id to
+const teamMembers = []
+const idArray = []
+//our CLI
+function appMenu(){
+//intro 
+console.log("Build your team!")
+//every team must have a manager
+function createManager(){
+inquirer.prompt([
+{
+    type: "input",
+    message: "what is your managers name",
+    name: "managerName"
+},
+{
+    type: "input",
+    message: "what is your managers id",
+    name: "managerId" 
+},
+{
+    type: "input",
+    message: "what is your managers email",
+    name: "managerEmail"
+},
+{
+    type: "input",
+    message: "what is your managers office number",
+    name: "managerOfficeNumber"
+}
+
+])
+.then(answers =>{
+    const manager = new Manager(answers.managerName,answers.managerId,answers.managerOfficeNumber,answers.managerEmail)
+    
+    teamMembers.push(manager)
+    idArray.push(answers.managerId)
+    createTeam()
+});
+//end cm
+};
+
+function createTeam(){
+
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "choose a team member",
+            choices: [
+                "Engineer",
+                "intern",
+                "I dont want to add any more team members"
+            ]
+        }
+    ])
+};
+
+
+
+//end appMenu
+};
 
 
 ​
