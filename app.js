@@ -64,7 +64,89 @@ function createTeam(){
                 "I dont want to add any more team members"
             ]
         }
-    ])
+    ]).then(userChoice => {
+        switch (userChoice.memberChoice) {
+            case "Engineer":
+                addEngineer()
+                break;
+            case "Intern":
+                    addIntern()
+                    break;
+            default:
+                buildTeam()
+                break;
+        }
+    })
+    //getting info from engineer if chosen
+    function addEngineer(){
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "engineers name",
+                name: "engineerName"
+            },
+            {
+                type: "input",
+                message: "engineers id",
+                name: "engineerId"
+            },
+            {
+                type: "input",
+                message: "engineers email",
+                name: "engineerEmail"
+            },
+            {
+                type: "input",
+                message: "engineers GitHub username",
+                name: "engineerGitHub"
+            }
+        ])
+        .then(answers => {
+        const engineer = new Engineer(answers.engineerName,answers.engineerEmail,answers.engineerId,answers.engineerGitHub) 
+        //puts all our enginner info into the teamMembers array
+        teamMembers.push(engineer)
+        //puts engineers id into the id array
+        idArray.push(answers.engineerId)
+        createTeam()
+    })
+    //end ae
+    }
+
+    function addIntern(){
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "interns name",
+                name: "internName"
+            },
+            {
+                type: "input",
+                message: "interns id",
+                name: "internId"
+            },
+            {
+                type: "input",
+                message: "interns email",
+                name: "internEmail"
+            },
+            {
+                type: "input",
+                message: "interns school",
+                name: "internSchool"
+            }
+        ])
+        .then(answers => {
+            const intern = new Intern(answers.internName,answers.internId,answers.internEmail,answers.internSchool)
+            teamMembers.push(intern)
+            idArray.push(answers.internId)
+            createTeam()
+        })
+        //end ai
+    }
+
+    //write the team to output dir
+    fs.writeFileSync(outputPath, render(teamMembers), "utf-8")
+
 };
 
 
